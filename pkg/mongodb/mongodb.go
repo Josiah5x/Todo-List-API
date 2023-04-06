@@ -1,0 +1,18 @@
+package mongodb
+
+import (
+	"fmt"
+
+	mgo "gopkg.in/mgo.v2"
+)
+
+func New(url string) *mgo.Database {
+	session, err := mgo.Dial(url)
+	if err != nil {
+		panic(err)
+	}
+
+	fmt.Println("You are connected to your mongo database", url)
+	// ensureIndex(session)
+	return session.DB("todo")
+}
