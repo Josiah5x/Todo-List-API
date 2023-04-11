@@ -30,7 +30,7 @@ func main() {
 	todo := v1.Group("/todo")
 
 	todo.POST("/todo", control.AddTodo)
-	todo.PATCH("/todo/:id", control.UpdateTodo)
+	todo.PUT("/todo/:id", control.UpdateTodo)
 	todo.GET("/todo", control.GetAllTodo)
 	todo.GET("/todo/:id", control.GetTodo)
 	todo.PATCH("/mark/:id", control.MarkTodoUpdateDone)
