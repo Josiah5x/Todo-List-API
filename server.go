@@ -33,7 +33,7 @@ func main() {
 	todo.PATCH("/todo/:id", control.UpdateTodo)
 	todo.GET("/todo", control.GetAllTodo)
 	todo.GET("/todo/:id", control.GetTodo)
-	todo.PUT("/mark/:id", control.MarkTodoUpdateDone)
+	todo.PATCH("/mark/:id", control.MarkTodoUpdateDone)
 	todo.PATCH("/deadline/:id", control.ChangeTodoDeadline)
 	todo.DELETE("/delete/:id", control.DeleteTodo)
 	e.Logger.Fatal(e.Start(":8080"))
