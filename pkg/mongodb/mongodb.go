@@ -12,7 +12,7 @@ func New(url string) *mgo.Database {
 		panic(err)
 	}
 
-	fmt.Println("You are connected to your mongo database", url)
+	fmt.Println("You are connected to your mongo database")
 	// ensureIndex(session)
 	return session.DB("todo")
 }

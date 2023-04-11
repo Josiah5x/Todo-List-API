@@ -24,20 +24,18 @@ func main() {
 	control := controller.New(svc)
 
 	e := echo.New()
-	// add middleware and routes
-	// ...
 
 	v1 := e.Group("/v1")
 
 	todo := v1.Group("/todo")
 
-	todo.POST("/addtodo", control.AddTodo)
-	todo.POST("/edittodo/:id", control.UpdateTodo)
-	todo.GET("/alltodo", control.GetAllTodo)
-	todo.GET("/gettodo/:id", control.GetTodo)
-	todo.POST("/editmark/:id", control.MarkTodoUpdateDone)
-	todo.POST("/editdeadline/:id", control.ChangeTodoDeadline)
-	todo.GET("/deletetodo/:id", control.DeleteTodo)
+	todo.POST("/todo", control.AddTodo)
+	todo.PATCH("/todo/:id", control.UpdateTodo)
+	todo.GET("/todo", control.GetAllTodo)
+	todo.GET("/todo/:id", control.GetTodo)
+	todo.PUT("/mark/:id", control.MarkTodoUpdateDone)
+	todo.PATCH("/deadline/:id", control.ChangeTodoDeadline)
+	todo.DELETE("/delete/:id", control.DeleteTodo)
 	e.Logger.Fatal(e.Start(":8080"))
 
 }
