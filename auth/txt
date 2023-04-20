@@ -1,0 +1,20 @@
+
+	// // fmt.Println(user.UserName)
+	// // Check in your db if the user exists or not
+	// if username != user.UserName && password != user.Password {
+	// 	return echo.ErrUnauthorized
+	// }
+	// if username == user.UserName && password == user.Password {
+	// 	// Create token
+	claims := &jwtCustomClaims{
+		FirstName: user.FisrName + " " + user.LastName,
+		StandardClaims: jwt.StandardClaims{
+			ExpiresAt: time.Now().Add(time.Hour * 1).Unix(),
+		},
+	}
+	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
+	tk, err := token.SignedString([]byte(config.Config("JWT_SCRETE_KEY")))
+	if err != nil {
+		return err
+	}
+	return c.JSONPretty(http.StatusOK, map[string]string{"token": tk}, " ")

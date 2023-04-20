@@ -10,4 +10,11 @@ type Repository interface {
 	MarkTodoDone(todo *model.Todo) (*model.Todo, error)
 	ChangeTodoDeadline(todo *model.Todo) (*model.Todo, error)
 	DeleteTodo(id string) error
+	// Section for User
+	AddUser(user *model.User) (*model.User, error)
+	EditUser(user *model.User) (*model.User, error)
+	GetAllUser() ([]*model.User, error)
+	GetUser(id string) (*model.User, error)
+	LoginUser(username, password string) (*model.User, error)
+	ChangePassword(user *model.User) (*model.User, error)
 }

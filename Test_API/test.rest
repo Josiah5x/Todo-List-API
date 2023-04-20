@@ -1,0 +1,1 @@
+curl -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmbmFtZSI6IiAiLCJsbmFtZSI6IiIsImV4cCI6MTY4MTc2MjYwMX0.A1uTIvIr3i4PPNjl4q_rLBXWRVNlkhaMF4BzArEnfgU" localhost:8080/v1/todos

@@ -1,0 +1,254 @@
+openapi: 3.0.3
+info:
+  title: "MIBs Technology API"
+  version: "1.0.0"
+  description: API that allow users to Create Todo and Get,Update and Delete an existing Todo
+  license:
+    name: MIBS Technology
+    url: htttp://mibstechnologies.com
+  contact:
+    name: MIBS Technology Team
+    url: htttp://mibstechnologies.com
+    email: info@mibstechnologies.com
+externalDocs:
+  description: More of Todo Api
+  url: htttp://mibstechnologies.com
+
+servers:
+  - url: htttp://localhost:8080/v1/todo
+security: []
+paths:
+  /todo:
+    summary: All todo
+    get:
+      operationId: GetAllTodo
+      description: Obtain all Todo from the Database
+      summary: return all todo
+      parameters:
+        - name: bodyLimit
+          in: query
+          description: The Amount of todo returnd
+          schema:
+            type: integer
+            minimum: 10
+            maximum: 20
+            example: 15
+        - name: pageLimit
+          in: query
+          description: The pages to return todo
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 5
+            example: 2
+      responses:
+        200:
+          description: Sucessfully pull of todo data
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/todo"
+        400:
+          description: Fail
+          content:
+            application/json:
+              schema:
+                type: string
+    post:
+      operationId: PostNewTodo
+      description: Create new Todo in the database
+      summary: "Create New Todo"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              $ref: "#/components/schemas/todo"
+
+      responses:
+        200:
+          description: Ok
+          content:
+            application/json:
+              schema:
+                type: object
+                items:
+                  $ref: "#/components/schemas/todo"
+        400:
+          description: Fail
+
+  /todo/{id}:
+    get:
+      operationId: GetSingleTodo
+      description: Obtain Single Todo from the Database
+      summary: return single todo
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The Id of the Todo
+          schema:
+            type: string
+            example: 2aerf325fg5kd2
+      responses:
+        200:
+          description: Sucessfully pull of todo data
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/todo"
+        400:
+          description: Fail
+          content:
+            application/json:
+              schema:
+                type: string
+    put:
+      operationId: UpdateTodoById
+      description: update data Todo
+      summary: "put todo by Id"
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The Id of the Todo
+          schema:
+            type: string
+            example: 2aerf325fg5kd2
+      responses:
+        200:
+          description: Ok
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: "#/components/schemas/todo"
+        400:
+          description: Fail
+  /mark/{id}:
+    patch:
+      operationId: PatchTodoById
+      description: patch specific status column of Todo
+      summary: "patch todo by Id"
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The Id of the Todo
+          schema:
+            type: string
+            example: 2aerf325fg5kd2
+      responses:
+        200:
+          description: Ok
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: "#/components/schemas/mark"
+        400:
+          description: Fail
+
+  /deadline/{id}:
+    patch:
+      operationId: ChangeTodoById
+      description: patch specific deadline column of Todo
+      summary: "patch todo by Id"
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The Id of the Todo
+          schema:
+            type: string
+            example: 2aerf325fg5kd2
+      responses:
+        200:
+          description: Ok
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: "#/components/schemas/deadline"
+        400:
+          description: Fail
+  /delete/{id}:
+    delete:
+      operationId: DeleteTodoById
+      description: Delete specific Todo
+      summary: "delete todo by Id"
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The Id of the Todo
+          schema:
+            type: string
+            example: 2aerf325fg5kd2
+      responses:
+        200:
+          description: Ok
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: "#/components/schemas/delete"
+        400:
+          description: Fail
+
+components:
+  schemas:
+    todo:
+      description: Model containing Todo info
+      properties:
+        id:
+          type: string
+          example: 2aerf325fg5kd2
+        todo name:
+          type: string
+          example: Golang
+        todo description:
+          type: string
+          example: Learn  Basic of Golang
+        todo status:
+          type: string
+          example: Undone/Done
+        todo deadline:
+          type: string
+          example: 30days
+        acepted_date:
+          type: integer
+          example: 0000-00-00
+        updated_date:
+          type: integer
+          example: 0000-00-00
+
+    deadline:
+      description: Model containing Todo info
+      properties:
+        id:
+          type: string
+          example: 2aerf325fg5kd2
+        todo status:
+          type: string
+          example: Undone/Done
+    mark:
+      description: Model containing Todo info
+      properties:
+        id:
+          type: string
+          example: 2aerf325fg5kd2
+        todo deadline:
+          type: string
+          example: 30days
+    delete:
+      description: Model containing Todo info
+      properties:
+        id:
+          type: string
+          example: 2aerf325fg5kd2

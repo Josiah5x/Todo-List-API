@@ -3,6 +3,8 @@ module github.com/Josiah5x/Todo-List-API
 go 1.18
 
 require (
+	github.com/dgrijalva/jwt-go v3.2.0+incompatible
+	github.com/golang-jwt/jwt v3.2.2+incompatible
 	github.com/joho/godotenv v1.5.1
 	github.com/labstack/echo v3.3.10+incompatible
 	github.com/twinj/uuid v1.0.0
