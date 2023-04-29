@@ -20,9 +20,9 @@ security: []
 paths:
   /user:
     post:
-      operationId: PostNewUser
-      description: Create new user in the database
-      summary: "Create New user"
+      operationId: CreateUser
+      description: Create a user
+      summary: "Create New User"
       requestBody:
         required: true
         content:
@@ -42,11 +42,12 @@ paths:
                   $ref: "#/components/schemas/user"
         400:
           description: Fail
-  /user/create:
+
+  /user/login:
     post:
-      operationId: LoginUser
-      description: Login user and Generate a JWT Json Web Token
-      summary: "Login user"
+      operationId: UserLogin
+      description: User will Login with Username & Password and a Token will be Generated
+      summary: "User Loging"
       requestBody:
         required: true
         content:
@@ -66,6 +67,7 @@ paths:
                   $ref: "#/components/schemas/user"
         400:
           description: Fail
+
   /user/all:
     summary: All user
     get:
@@ -136,7 +138,7 @@ paths:
     put:
       operationId: UpdateUserById
       description: update data user
-      summary: "update user by Id"
+      summary: "update single user by Id"
       parameters:
         - in: path
           name: id
@@ -158,8 +160,8 @@ paths:
   /changepassword/{id}:
     patch:
       operationId: PatchUserById
-      description: patch specific status column of user
-      summary: "patch user password by Id"
+      description: update a single field password of a user by Iduser
+      summary: "update a single field password by Id"
       parameters:
         - in: path
           name: id

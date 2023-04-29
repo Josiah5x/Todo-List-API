@@ -40,7 +40,7 @@ func main() {
 	//User Section
 	// v2 := e.Group("/v2")
 	user := v1.Group("/user")
-	user.POST("", Usercontrol.AddUser)
+	user.POST("/", Usercontrol.AddUser)
 	user.POST("/login", Usercontrol.LoginUser)
 	user.PUT("/:id", Usercontrol.EditUser)
 	user.GET("/all", Usercontrol.GetAllUser)
