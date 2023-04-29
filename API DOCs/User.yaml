@@ -42,7 +42,7 @@ paths:
                   $ref: "#/components/schemas/user"
         400:
           description: Fail
-  /create:
+  /user/create:
     post:
       operationId: LoginUser
       description: Login user and Generate a JWT Json Web Token
