@@ -10,4 +10,5 @@ func Auths() echo.MiddlewareFunc {
 	return middleware.JWTWithConfig(middleware.JWTConfig{
 		SigningKey: []byte(config.Config("JWT_SCRETE_KEY")),
 	})
+
 }

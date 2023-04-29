@@ -2,41 +2,43 @@ package auth
 
 import (
 	"errors"
-	"net/http"
+	"fmt"
 	"time"
 
+	bcryptionpassword "github.com/Josiah5x/Todo-List-API/BcryptionPassword"
 	"github.com/Josiah5x/Todo-List-API/config"
 	"github.com/Josiah5x/Todo-List-API/model"
 	"github.com/dgrijalva/jwt-go"
-	"github.com/labstack/echo"
 )
 
 // var jwtKey = []byte("supersecretkey")
 
 type JWTClaim struct {
-	UserName string `json:"username" bson:"username"`
-	Password string `json:"password" bson:"password"`
+	UserName string
+	UserId   string
 	jwt.StandardClaims
 }
 
-func GenerateJWT(c echo.Context) error {
-	user := new(model.User)
-	if err := c.Bind(user); err != nil {
-		return err
+func GenerateJWT(usernameForm, passwordForm string, findUser *model.User) (tk string, err error) {
+	check := bcryptionpassword.CheckPassword(findUser.Password, passwordForm)
+	fmt.Println(check)
+	truth := true
+	if usernameForm == findUser.UserName && check == truth {
+		claims := &JWTClaim{
+			UserName: findUser.UserName,
+			UserId:   findUser.UserId,
+			StandardClaims: jwt.StandardClaims{
+				ExpiresAt: time.Now().Add(time.Hour * 1).Unix(),
+			},
+		}
+		token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
+		tk, err := token.SignedString([]byte(config.Config("JWT_SCRETE_KEY")))
+		if err != nil {
+			return tk, err
+		}
+		return tk, nil
 	}
-	claims := &JWTClaim{
-		UserName: user.UserName,
-		Password: user.Password,
-		StandardClaims: jwt.StandardClaims{
-			ExpiresAt: time.Now().Add(time.Hour * 1).Unix(),
-		},
-	}
-	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
-	tk, err := token.SignedString([]byte(config.Config("JWT_SCRETE_KEY")))
-	if err != nil {
-		return err
-	}
-	return c.JSONPretty(http.StatusOK, map[string]string{"token": tk}, " ")
+	return tk, nil
 }
 
 func ValidateToken(signedToken string) (err error) {

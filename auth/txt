@@ -1,13 +1,10 @@
-
-	// // fmt.Println(user.UserName)
-	// // Check in your db if the user exists or not
-	// if username != user.UserName && password != user.Password {
-	// 	return echo.ErrUnauthorized
-	// }
-	// if username == user.UserName && password == user.Password {
-	// 	// Create token
-	claims := &jwtCustomClaims{
-		FirstName: user.FisrName + " " + user.LastName,
+check := bcryptionpassword.CheckPassword(findUser.Password, passwordForm)
+fmt.Println(check)
+truth := true
+if usernameForm == findUser.UserName && check == truth {
+	claims := &JWTClaim{
+		UserName: findUser.UserName,
+		UserId:   findUser.UserId,
 		StandardClaims: jwt.StandardClaims{
 			ExpiresAt: time.Now().Add(time.Hour * 1).Unix(),
 		},
@@ -18,3 +15,4 @@
 		return err
 	}
 	return c.JSONPretty(http.StatusOK, map[string]string{"token": tk}, " ")
+}

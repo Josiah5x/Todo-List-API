@@ -15,19 +15,19 @@ externalDocs:
   url: htttp://mibstechnologies.com
 
 servers:
-  - url: htttp://localhost:8080/v1/todo
+  - url: http://localhost:8080/v1
 security: []
 paths:
-  /todo:
-    summary: All todo
+  /todos:
+    summary: All todos
     get:
       operationId: GetAllTodo
       description: Obtain all Todo from the Database
-      summary: return all todo
+      summary: return all todos
       parameters:
         - name: bodyLimit
           in: query
-          description: The Amount of todo returnd
+          description: The Amount of todos returnd
           schema:
             type: integer
             minimum: 10
@@ -35,7 +35,7 @@ paths:
             example: 15
         - name: pageLimit
           in: query
-          description: The pages to return todo
+          description: The pages to return todos
           schema:
             type: integer
             minimum: 1
@@ -43,13 +43,13 @@ paths:
             example: 2
       responses:
         200:
-          description: Sucessfully pull of todo data
+          description: Sucessfully pull of todos data
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  $ref: "#/components/schemas/todo"
+                  $ref: "#/components/schemas/todos"
         400:
           description: Fail
           content:
@@ -66,7 +66,7 @@ paths:
           application/json:
             schema:
               type: object
-              $ref: "#/components/schemas/todo"
+              $ref: "#/components/schemas/todos"
 
       responses:
         200:
@@ -76,15 +76,15 @@ paths:
               schema:
                 type: object
                 items:
-                  $ref: "#/components/schemas/todo"
+                  $ref: "#/components/schemas/todos"
         400:
           description: Fail
 
-  /todo/{id}:
+  /todos/{id}:
     get:
       operationId: GetSingleTodo
       description: Obtain Single Todo from the Database
-      summary: return single todo
+      summary: return single todos
       parameters:
         - in: path
           name: id
@@ -95,13 +95,13 @@ paths:
             example: 2aerf325fg5kd2
       responses:
         200:
-          description: Sucessfully pull of todo data
+          description: Sucessfully pull of todos data
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  $ref: "#/components/schemas/todo"
+                  $ref: "#/components/schemas/todos"
         400:
           description: Fail
           content:
@@ -111,7 +111,7 @@ paths:
     put:
       operationId: UpdateTodoById
       description: update data Todo
-      summary: "put todo by Id"
+      summary: "put todos by Id"
       parameters:
         - in: path
           name: id
@@ -127,14 +127,14 @@ paths:
             application/json:
               schema:
                 type: object
-                $ref: "#/components/schemas/todo"
+                $ref: "#/components/schemas/todos"
         400:
           description: Fail
   /mark/{id}:
     patch:
       operationId: PatchTodoById
       description: patch specific status column of Todo
-      summary: "patch todo by Id"
+      summary: "patch todos by Id"
       parameters:
         - in: path
           name: id
@@ -158,7 +158,7 @@ paths:
     patch:
       operationId: ChangeTodoById
       description: patch specific deadline column of Todo
-      summary: "patch todo by Id"
+      summary: "patch todos by Id"
       parameters:
         - in: path
           name: id
@@ -181,7 +181,7 @@ paths:
     delete:
       operationId: DeleteTodoById
       description: Delete specific Todo
-      summary: "delete todo by Id"
+      summary: "delete todos by Id"
       parameters:
         - in: path
           name: id
@@ -203,22 +203,22 @@ paths:
 
 components:
   schemas:
-    todo:
+    todos:
       description: Model containing Todo info
       properties:
         id:
           type: string
           example: 2aerf325fg5kd2
-        todo name:
+        todos name:
           type: string
           example: Golang
-        todo description:
+        todos description:
           type: string
           example: Learn  Basic of Golang
-        todo status:
+        todos status:
           type: string
           example: Undone/Done
-        todo deadline:
+        todos deadline:
           type: string
           example: 30days
         acepted_date:
@@ -234,7 +234,7 @@ components:
         id:
           type: string
           example: 2aerf325fg5kd2
-        todo status:
+        todos status:
           type: string
           example: Undone/Done
     mark:
@@ -243,7 +243,7 @@ components:
         id:
           type: string
           example: 2aerf325fg5kd2
-        todo deadline:
+        todos deadline:
           type: string
           example: 30days
     delete:

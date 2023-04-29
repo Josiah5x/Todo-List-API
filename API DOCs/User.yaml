@@ -1,0 +1,250 @@
+openapi: 3.0.3
+info:
+  title: "MIBs Technology API"
+  version: "1.0.0"
+  description: API that allow users to Create user and Get,Update and Delete an existing user
+  license:
+    name: MIBS Technology
+    url: htttp://mibstechnologies.com
+  contact:
+    name: MIBS Technology Team
+    url: htttp://mibstechnologies.com
+    email: info@mibstechnologies.com
+externalDocs:
+  description: More of user Api
+  url: htttp://mibstechnologies.com
+
+servers:
+  - url: http://localhost:8080/v1
+security: []
+paths:
+  /user:
+    post:
+      operationId: PostNewUser
+      description: Create new user in the database
+      summary: "Create New user"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              $ref: "#/components/schemas/user"
+
+      responses:
+        200:
+          description: Ok
+          content:
+            application/json:
+              schema:
+                type: object
+                items:
+                  $ref: "#/components/schemas/user"
+        400:
+          description: Fail
+  /create:
+    post:
+      operationId: LoginUser
+      description: Login user and Generate a JWT Json Web Token
+      summary: "Login user"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              $ref: "#/components/schemas/user"
+
+      responses:
+        200:
+          description: Ok
+          content:
+            application/json:
+              schema:
+                type: object
+                items:
+                  $ref: "#/components/schemas/user"
+        400:
+          description: Fail
+  /user/all:
+    summary: All user
+    get:
+      operationId: GetAllUser
+      description: Obtain all user from the Database
+      summary: return all user
+      parameters:
+        - name: bodyLimit
+          in: query
+          description: The Amount of user returnd
+          schema:
+            type: integer
+            minimum: 10
+            maximum: 20
+            example: 15
+        - name: pageLimit
+          in: query
+          description: The pages to return user
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 5
+            example: 2
+      responses:
+        200:
+          description: Sucessfully pull of user data
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/user"
+        400:
+          description: Fail
+          content:
+            application/json:
+              schema:
+                type: string
+
+  /user/{id}:
+    get:
+      operationId: GetSingleTodo
+      description: Obtain Single user from the Database
+      summary: return single user
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The Id of the user
+          schema:
+            type: string
+            example: 2aerf325fg5kd2
+      responses:
+        200:
+          description: Sucessfully pull of user data
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/user"
+        400:
+          description: Fail
+          content:
+            application/json:
+              schema:
+                type: string
+    put:
+      operationId: UpdateUserById
+      description: update data user
+      summary: "update user by Id"
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The Id of the user
+          schema:
+            type: string
+            example: c6d92ec5-5f1e-40ea-9ac3-c6aaf3b5813d
+      responses:
+        200:
+          description: Ok
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: "#/components/schemas/user"
+        400:
+          description: Fail
+  /changepassword/{id}:
+    patch:
+      operationId: PatchUserById
+      description: patch specific status column of user
+      summary: "patch user password by Id"
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The Id of the user
+          schema:
+            type: string
+            example: c6d92ec5-5f1e-40ea-9ac3-c6aaf3b5813d
+      responses:
+        200:
+          description: Ok
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: "#/components/schemas/changepassword"
+        400:
+          description: Fail
+
+  /user/delete/{id}:
+    delete:
+      operationId: DeleteTodoById
+      description: Delete specific user
+      summary: "delete user by Id"
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The Id of the user
+          schema:
+            type: string
+            example: c6d92ec5-5f1e-40ea-9ac3-c6aaf3b5813d
+      responses:
+        200:
+          description: Ok
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: "#/components/schemas/delete"
+        400:
+          description: Fail
+
+components:
+  schemas:
+    user:
+      description: Model containing user info
+      properties:
+        _id:
+          type: string
+          example: c6d92ec5-5f1e-40ea-9ac3-c6aaf3b5813d
+        firstname:
+          type: string
+          example: James
+        lastname:
+          type: string
+          example: Daniel
+        email:
+          type: string
+          example: james123@gmail.com
+        username:
+          type: string
+          example: user1
+        pasword:
+          type: string
+          example: "6060"
+        createdAt:
+          type: integer
+          example: 0000-00-00
+        updatedAt:
+          type: integer
+          example: 0000-00-00
+
+    changepassword:
+      description: Model containing user info
+      properties:
+        id:
+          type: string
+          example: c6d92ec5-5f1e-40ea-9ac3-c6aaf3b5813d
+        user deadline:
+          type: string
+          example: 30days
+    delete:
+      description: Model containing user info
+      properties:
+        id:
+          type: string
+          example: 1fb399e9-5cfb-4823-b430-6b4193e8b4b4
