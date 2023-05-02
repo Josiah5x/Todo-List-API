@@ -27,6 +27,7 @@ func main() {
 	e := echo.New()
 	// e.Use(middleware.Logger())
 	e.Use(middleware.Recover())
+	e.Use(middlewares.CORESConfig())
 
 	v1 := e.Group("/v1")
 	todo := v1.Group("/todos", middlewares.Auths())
