@@ -1,6 +1,7 @@
 package controller
 
 import (
+	"fmt"
 	"net/http"
 	"time"
 
@@ -32,7 +33,6 @@ func (control *TodoController) AddTodo(c echo.Context) error {
 	userid := claims["UserId"].(string)
 	// fmt.Println("THIS IS THE ID:", userid)
 	newtodo.UserId = userid
-
 	// time Duration for Deadline
 	duration, err := time.ParseDuration(newtodo.Deadline)
 	if err != nil {
@@ -41,11 +41,11 @@ func (control *TodoController) AddTodo(c echo.Context) error {
 	deadline := time.Now().Local().Add(duration)
 	newtodo.Deadline = deadline.Format("2 Jan 06 03:04PM")
 	// .....................
-	todo, err := control.appSvc.AddTodo(newtodo)
+	_, err = control.appSvc.AddTodo(newtodo)
 	if err != nil {
 		return err
 	}
-	return c.JSONPretty(http.StatusOK, todo, " ")
+	return c.JSONPretty(http.StatusOK, "Successfully Added", " ")
 }
 
 // Update a Todo in the Database
@@ -59,6 +59,13 @@ func (control *TodoController) UpdateTodo(c echo.Context) error {
 	if err := c.Bind(newtodo); err != nil {
 		return err
 	}
+	user := c.Get("user").(*jwt.Token)
+	// fmt.Println("see what ar looking 4", user)
+	claims := user.Claims.(jwt.MapClaims)
+	userid := claims["UserId"].(string)
+	// fmt.Println("THIS IS THE ID:", userid)
+	newtodo.UserId = userid
+
 	duration, err := time.ParseDuration(newtodo.Deadline)
 	if err != nil {
 		panic(err)
@@ -70,13 +77,13 @@ func (control *TodoController) UpdateTodo(c echo.Context) error {
 		return err
 	}
 	structs.Merge(findEm, newtodo)
-	todo, err := control.appSvc.EditTodo(findEm)
+	_, err = control.appSvc.EditTodo(findEm)
 	// fmt.Println("todo", todo)
 	if err != nil {
 		return err
 	}
 
-	return c.JSONPretty(http.StatusOK, todo, " ")
+	return c.JSONPretty(http.StatusOK, "Update Successfully", " ")
 }
 
 // Return all Todo in the Database
@@ -109,20 +116,9 @@ func (control *TodoController) GetTodo(c echo.Context) error {
 
 }
 
-// Delete Todo By ID
-func (control *TodoController) DeleteTodo(c echo.Context) error {
-	id := c.Param("id")
-	err := control.appSvc.DeleteTodo(id)
-	if err != nil {
-		return err
-	}
-	return c.JSONPretty(http.StatusOK, "Todo deleted Successfully", " ")
-}
-
 // Mark Todo eg(Done/Undone) By ID
 func (control *TodoController) MarkTodoUpdateDone(c echo.Context) error {
 	newtodo := new(model.Todo)
-
 	id := string(c.Param("id"))
 	if id == "" {
 		return nil
@@ -131,17 +127,17 @@ func (control *TodoController) MarkTodoUpdateDone(c echo.Context) error {
 		return err
 	}
 	findEm, err := control.appSvc.GetTodo(id)
-	// fmt.Println(findEm)
+	fmt.Println(findEm)
 	if err != nil {
 		return err
 	}
 	structs.Merge(findEm, newtodo)
-	todo, err := control.appSvc.MarkTodoDone(findEm)
-	// fmt.Println(todo)
+	_, err = control.appSvc.MarkTodoDone(findEm)
+	// fmt.Println(todo.Status)
 	if err != nil {
 		return err
 	}
-	return c.JSONPretty(http.StatusOK, todo, " ")
+	return c.JSONPretty(http.StatusOK, "Updated Successfully", " ")
 }
 
 // Change a Specific todos Deadline by ID
@@ -169,10 +165,21 @@ func (control *TodoController) ChangeTodoDeadline(c echo.Context) error {
 		return err
 	}
 	structs.Merge(findEm, newtodo)
-	todo, err := control.appSvc.ChangeTodoDeadline(findEm)
+	_, err = control.appSvc.ChangeTodoDeadline(findEm)
 	// fmt.Println(todo)
 	if err != nil {
 		return err
 	}
-	return c.JSONPretty(http.StatusOK, todo, " ")
+	return c.JSONPretty(http.StatusOK, "Updated Successfully", " ")
+}
+
+// Delete Todo By ID
+func (control *TodoController) DeleteTodo(c echo.Context) error {
+	id := string(c.Param("id"))
+	err := control.appSvc.DeleteTodo(id)
+	if err != nil {
+		return err
+	}
+	//
+	return c.JSONPretty(http.StatusOK, "Deleted Successfully", " ")
 }

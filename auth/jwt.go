@@ -20,6 +20,7 @@ type JWTClaim struct {
 }
 
 func GenerateJWT(usernameForm, passwordForm string, findUser *model.User) (tk string, err error) {
+
 	check := bcryptionpassword.CheckPassword(findUser.Password, passwordForm)
 	fmt.Println(check)
 	truth := true

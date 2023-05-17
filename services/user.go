@@ -28,6 +28,7 @@ func (ss *UserService) GetAllUser() ([]*model.User, error) {
 func (ss *UserService) GetUser(id string) (*model.User, error) {
 	return ss.repo.GetUser(id)
 }
+
 func (ss *UserService) LoginUser(username string) (*model.User, error) {
 	return ss.repo.LoginUser(username)
 }

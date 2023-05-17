@@ -1,7 +1,6 @@
 package controller
 
 import (
-	"fmt"
 	"net/http"
 
 	"github.com/Josiah5x/Todo-List-API/auth"
@@ -32,11 +31,11 @@ func (control *UserController) AddUser(c echo.Context) error {
 	if err := c.Bind(newUser); err != nil {
 		return err
 	}
-	user, err := control.appSvc.AddUser(newUser)
+	_, err := control.appSvc.AddUser(newUser)
 	if err != nil {
 		return err
 	}
-	return c.JSONPretty(http.StatusOK, user, " ")
+	return c.JSONPretty(http.StatusOK, "User Succeddfully Added", " ")
 }
 
 // Edit a User
@@ -54,12 +53,12 @@ func (control *UserController) EditUser(c echo.Context) error {
 		return err
 	}
 	structs.Merge(findEm, newUser)
-	user, err := control.appSvc.EditUser(findEm)
+	_, err = control.appSvc.EditUser(findEm)
 	// fmt.Println("user", user)
 	if err != nil {
 		return err
 	}
-	return c.JSONPretty(http.StatusOK, user, " ")
+	return c.JSONPretty(http.StatusOK, "Updated Successfully", " ")
 }
 
 // Return All Users
@@ -84,14 +83,16 @@ func (control *UserController) GetUser(c echo.Context) error {
 
 //  Login for Auth using JSON Web Token
 func (control *UserController) LoginUser(c echo.Context) error {
-	usernameForm := c.FormValue("username")
-	passwordForm := c.FormValue("password")
-
-	findUser, err := control.appSvc.LoginUser(usernameForm)
+	newUser := new(model.User)
+	if err := c.Bind(newUser); err != nil {
+		return err
+	}
+	findUser, err := control.appSvc.LoginUser(newUser.UserName)
 	if err != nil {
 		return err
 	}
-	tk, err := auth.GenerateJWT(usernameForm, passwordForm, findUser)
+
+	tk, err := auth.GenerateJWT(newUser.UserName, newUser.Password, findUser)
 	if err != nil {
 		return err
 	}
@@ -99,14 +100,13 @@ func (control *UserController) LoginUser(c echo.Context) error {
 
 		return c.JSONPretty(http.StatusBadRequest, "Invalid Username or Password", " ")
 	}
-	return c.JSONPretty(http.StatusOK, map[string]string{"token": tk}, " ")
+	return c.JSONPretty(http.StatusOK, map[string]string{"Token": tk}, " ")
 }
 
 // Change user password, by id
 func (control *UserController) ChangePassword(c echo.Context) error {
 	newUser := new(model.User)
 	id := string(c.Param("id"))
-	// println(id)
 	if id == "" {
 		return nil
 	}
@@ -114,17 +114,16 @@ func (control *UserController) ChangePassword(c echo.Context) error {
 		return err
 	}
 	findEm, err := control.appSvc.GetUser(id)
-	// fmt.Println(findEm)
 	if err != nil {
 		return err
 	}
 	structs.Merge(findEm, newUser)
-	user, err := control.appSvc.ChangePassword(findEm)
-	fmt.Println(user)
+	_, err = control.appSvc.ChangePassword(findEm)
+	// fmt.Println(user)
 	if err != nil {
 		return err
 	}
-	return c.JSONPretty(http.StatusOK, user, " ")
+	return c.JSONPretty(http.StatusOK, "Updated Successfully", " ")
 }
 
 // Delete Todo By ID
@@ -134,5 +133,5 @@ func (control *UserController) DeleteUser(c echo.Context) error {
 	if err != nil {
 		return err
 	}
-	return c.JSONPretty(http.StatusOK, "User deleted Successfully", " ")
+	return c.JSONPretty(http.StatusOK, "Deleted Successfully", " ")
 }

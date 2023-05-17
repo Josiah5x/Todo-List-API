@@ -21,9 +21,11 @@ func main() {
 	// Service
 	svc := services.NewTodo(mgos)
 	svcs := services.NewUser(mgos)
+
 	// Controller
 	Todocontrol := controller.NewTodo(svc)
 	Usercontrol := controller.NewUser(svcs)
+
 	e := echo.New()
 	// e.Use(middleware.Logger())
 	e.Use(middleware.Recover())
@@ -34,12 +36,11 @@ func main() {
 	todo.POST("", Todocontrol.AddTodo)
 	todo.PUT("/:id", Todocontrol.UpdateTodo)
 	todo.GET("", Todocontrol.GetAllTodo)
-	todo.GET("/id", Todocontrol.GetTodo)
+	todo.GET("/:id", Todocontrol.GetTodo)
 	todo.PATCH("/mark/:id", Todocontrol.MarkTodoUpdateDone)
 	todo.PATCH("/deadline/:id", Todocontrol.ChangeTodoDeadline)
 	todo.DELETE("/delete/:id", Todocontrol.DeleteTodo)
 	//User Section
-	// v2 := e.Group("/v2")
 	user := v1.Group("/user")
 	user.POST("", Usercontrol.AddUser)
 	user.POST("/login", Usercontrol.LoginUser)
@@ -47,7 +48,8 @@ func main() {
 	user.GET("/all", Usercontrol.GetAllUser)
 	user.GET("/:id", Usercontrol.GetUser)
 	user.PATCH("/changepassword/:id", Usercontrol.ChangePassword)
-	todo.DELETE("/delete/:id", Usercontrol.DeleteUser)
+	user.DELETE("/delete/:id", Usercontrol.DeleteUser)
+
 	// Server Section
 	e.Logger.Fatal(e.Start(":8080"))
 

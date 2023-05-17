@@ -41,7 +41,7 @@ func (mgo *Mongodb) EditTodo(todo *model.Todo) (*model.Todo, error) {
 }
 func (mgo *Mongodb) GetTodo(id string) (*model.Todo, error) {
 	var todo = new(model.Todo)
-	err := mgo.db.C(TodoCollection).Find(bson.M{"userid": id}).One(&todo)
+	err := mgo.db.C(TodoCollection).Find(bson.M{"_id": id}).One(&todo)
 	if err != nil {
 		return todo, err
 	}
@@ -58,7 +58,7 @@ func (mgo *Mongodb) GetAllTodo() ([]*model.Todo, error) {
 }
 
 func (mgo *Mongodb) MarkTodoDone(todo *model.Todo) (*model.Todo, error) {
-	err := mgo.db.C(TodoCollection).Update(nil, bson.M{"$set": bson.M{"status": todo.Status, "b": true}})
+	err := mgo.db.C(TodoCollection).Update(bson.M{"_id": todo.Id}, bson.M{"$set": bson.M{"status": todo.Status, "b": true}})
 	if err != nil {
 		return todo, err
 	}
@@ -66,7 +66,7 @@ func (mgo *Mongodb) MarkTodoDone(todo *model.Todo) (*model.Todo, error) {
 }
 
 func (mgo *Mongodb) ChangeTodoDeadline(todo *model.Todo) (*model.Todo, error) {
-	err := mgo.db.C(TodoCollection).Update(nil, bson.M{"$set": bson.M{"deadline": todo.Deadline, "b": true}})
+	err := mgo.db.C(TodoCollection).Update(bson.M{"_id": todo.Id}, bson.M{"$set": bson.M{"deadline": todo.Deadline, "b": true}})
 	if err != nil {
 		return todo, err
 	}
