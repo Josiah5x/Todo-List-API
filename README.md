@@ -14,7 +14,7 @@
 #### Login :
 * Require email and password as the post body.
 * Authenticate the user through provided credentials.
-* If the user is verified and the email/password is correct, respond with a JWT token, otherwise show the appropriate response
+* If the user is verified eg(username and password) is correct, respond with a JWT token, otherwise show the appropriate response
 
 
 ------------------------------------------------------------------
