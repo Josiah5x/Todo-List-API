@@ -20,7 +20,7 @@
 ------------------------------------------------------------------
 
 
-#### Creating new
+#### Creating new User
 
 <details>
  <summary><code>POST</code> <code><b>/v1/user</b></code> <code>(Creating new user)</code></summary>
