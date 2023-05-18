@@ -213,7 +213,6 @@ Password Successfully Updated
 
 </details>
 
-
 ------------------------------------------------------------------------------------------
 
 #### Deleting existing User
@@ -242,17 +241,13 @@ Successfully Deleted
 
 </details>
 
-
-
 ------------------------------------------------------------------------------------------
-
 
 ## Todos Section
 - User Section must be satisfy before accessing the todo endpoint.
 ------------------------------------------------------------------
 
-
-#### Creating new
+#### Creating new Todo
 
 <details>
  <summary><code>POST</code> <code><b>/v1/todo</b></code> <code>(Creating new todo)</code></summary>
@@ -299,7 +294,7 @@ Successfully Deleted
 
 ------------------------------------------------------------------------------------------
 
-#### Listing existing 
+#### Listing existing Todo
 
 <details>
  <summary><code>GET</code> <code><b>/</b></code> <code>(gets all todos)</code></summary>
@@ -329,13 +324,13 @@ Successfully Deleted
 
 > | name              |  type     | data type      | description                         |
 > |-------------------|-----------|----------------|-------------------------------------|
-> | `stub_numeric_id` |  required | int ($int64)   | The specific stub numeric some-unique-uuid        |
+> | `uuid` |  required | string   | T some-unique-uuid string        |
 
 ##### Responses
 
 > | http code     | content-type                      | response                                                            |
 > |---------------|-----------------------------------|---------------------------------------------------------------------|
-> | `200`         | `text/plain;charset=UTF-8`       string                                                         |
+> | `200`         | `text/plain;charset=UTF-8`               string                                                         |
 > | `400`         | `application/json`                | `{"code":"400","message":"Bad Request"}`                            |
 
 ##### Example cURL
@@ -350,11 +345,19 @@ Successfully Deleted
 ------------------------------------------------------------------------------------------
 
 
-#### Updating existing
-
+#### Updating existing Todo
 
 <details>
   <summary><code>PUT</code> <code><b>/v1/todos/some-unique-uuid</b></code> <code>(updates todos by some-unique-uuid)</code></summary>
+ 
+##### Request
+ ``` javascript
+ {
+  "name": "DevOP",
+  "description": "Basic of DevOp",
+  "deadline": "12h"
+}
+```
 
 ##### Parameters
 
@@ -364,37 +367,43 @@ Successfully Deleted
 
 ##### Responses
 
-> | http code     | content-type                      | response                                                            |
-> |---------------|-----------------------------------|---------------------------------------------------------------------|
-> | `201`         | `text/plain;charset=UTF-8`        | `Proxy config uuid#<uuid> updated successfully`                     |
-> | `400`         | `application/json`                | `{"code":"400","message":"Bad Request"}`                            |
-> | `405`         | `text/html;charset=utf-8`         | None                                                                |
+> updated successfully
 
 ##### Example cURL
 
 > ```javascript
->  curl -X PUT -H "Content-Type: application/json" --data @put.json http://localhost:8080/v1/todos/proxy-config/some-unique-uuid-string
+>  curl -X PUT -H "Content-Type: application/json" --data @put.json http://localhost:8080/v1/todos/some-unique-uuid-string
 > ```
 
 </details>
 
 ----------------------------------------------
 
-#### Update todos by Patching 
+#### Update Todos by Patching 
 
 ###### #Mark Done/Undone / #Deadline
 <details>
  <summary><code>PATCH</code> <code><b>/v1/todos/mark/some-unique-uuid</b></code> <code>(updating a specific todos by patching Done or Undone)</code></summary>
 
+  ##### Request
+ 
+ ``` javascript
+ {
+ "status": "Done"
+ }
+ 
+ ```
+ 
 ##### Parameters
 
-> None
+> | name   |  type      | data type      | description                                                  |
+> |--------|------------|----------------|--------------------------------------------------------------|
+> | `uuid` |  required  | string         | The specific unique idendifier                  |
+
 
 ##### Responses
 
-> | http code     | content-type                      | response                                                            |
-> |---------------|-----------------------------------|---------------------------------------------------------------------|
-> | `200`         | `text/plain;charset=UTF-8`       string                                                         |
+ > Update successfully                                                  |
 
 ##### Example cURL
 
@@ -407,30 +416,36 @@ Successfully Deleted
 <details>
  <summary><code>PATCH</code> <code><b>/v1/todos/deadline/some-unique-uuid</b></code> <code>(update the todos by patching deadline(eg.Date) )</code></summary>
 
+ ##### Request
+ 
+ ``` javascript
+ {
+ "deadline": "24h"
+ }
+ 
+ ```
+ 
 ##### Parameters
 
 > | name              |  type     | data type      | description                         |
 > |-------------------|-----------|----------------|-------------------------------------|
-> | `stub_numeric_id` |  required | int ($int64)   | The specific stub numeric some-unique-uuid        |
+> | `uuid` |  required | string  | The specific unique-uuid string       |
 
 ##### Responses
 
-> | http code     | content-type                      | response                                                            |
-> |---------------|-----------------------------------|---------------------------------------------------------------------|
-> | `200`         | `text/plain;charset=UTF-8`       string                                                         |
-> | `400`         | `application/json`                | `{"code":"400","message":"Bad Request"}`                            |
+ > Update successfully
 
 ##### Example cURL
 
 > ```javascript
->  curl -X PATCH -H "Content-Type: application/json" http://localhost:8080/v1/todos/some-unique-uuid
+>  curl -X PATCH -H "Content-Type: application/json" http://localhost:8080/v1/todos/some-unique-uuid string
 > ```
 
 </details>
 
 ------------------------------------------------------------------------------------------
 
-#### Deleting existing
+#### Deleting existing Todo
 
 <details>
   <summary><code>DELETE</code> <code><b>/v1/todos/some-unique-uuid</b></code> <code>(Delete todos by some-unique-uuid)</code></summary>
@@ -439,16 +454,13 @@ Successfully Deleted
 
 > | name   |  type      | data type      | description                                          |
 > |--------|------------|----------------|------------------------------------------------------|
-> | `uuid` |  required  | string         | The specific stub unique idendifier                  |
+> | `uuid` |  required  | string         |    The specific unique-uuid string                  |
 
 
 ##### Responses
 
-> | http code     | content-type                      | response                                                            |
-> |---------------|-----------------------------------|---------------------------------------------------------------------|
-> | `200`         | `text/plain;charset=UTF-8`        | `Stub request uuid#<uuid> deleted successfully`                     |
-> | `400`         | `application/json`                | `{"code":"400","message":"Bad Request"}`                            |
-
+ > Deleted successfully
+ 
 ##### Example cURL
 
 > ```javascript
@@ -456,5 +468,4 @@ Successfully Deleted
 > ```
 
 </details>
-----------------------------------------------
 
