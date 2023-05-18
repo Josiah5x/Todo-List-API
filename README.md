@@ -1,16 +1,21 @@
 ## Todo-List-API
  Todo-List-API-With-Golang MVC 
 
- Welcome to our project! This is a Todo list App made in Golang using MVC pattern. It allows users to quickly and easily Add,Update Delete. With this App, users can effortlessly manage their tasks and events, helping them stay organized and on top of their to-do list. We hope you enjoy and we look forward to your contributions!
+ Welcome to our project! This is a Todo list App made in Golang using MVC pattern and Databas(mongoDB). It allows users to quickly and easily Add,Update Delete. With this App, users can effortlessly manage their tasks and events, helping them stay organized and on top of their to-do list. We hope you enjoy and we look forward to your contributions!
 
 ------------------------------------------------------------------
 
 ## User Section
->
-- To access our todo you must be Identify as a potential User
-- Login if register
-- A Token will be given valid for 24h
-- Below are the Steps to us
+
+#### Register :
+* Require Firstname, Lastname Email Username, password
+* Return appropriate response
+
+#### Login :
+* Require email and password as the post body.
+* Authenticate the user through provided credentials.
+* If the user is verified and the email/password is correct, respond with a JWT token, otherwise show the appropriate response
+
 
 ------------------------------------------------------------------
 
@@ -247,7 +252,12 @@ Successfully Deleted
 - User Section must be satisfy before accessing the todo endpoint.
 ------------------------------------------------------------------
 
-#### Creating new Todo
+#### Create ToDo :
+* Only accessible for authenticated users
+2 fields are required: name, description and deadline of the ToDo item
+* On success save the item to the database
+* Return appropriate response
+
 
 <details>
  <summary><code>POST</code> <code><b>/v1/todo</b></code> <code>(Creating new todo)</code></summary>
@@ -271,16 +281,7 @@ Successfully Deleted
 ##### Responses
 
 ``` javascript
-{
-  "_id": "218317a5-696d-4379-a178-9e3c9585deaa",
-  "userid": "c6d92ec5-5f1e-40ea-9ac3-c6aaf3b5813d",
-  "name": "DevOP",
-  "description": "Basic of DevOp",
-  "status": "Undone",
-  "deadline": "17 May 23 05:23AM",
-  "CreatedAt": "2023-05-16T17:23:37.271105926+01:00",
-  "UpdatedAt": "0001-01-01T00:00:00Z"
-}
+Todo created successfully 
 ```
 
 ##### Example cURL
@@ -294,7 +295,9 @@ Successfully Deleted
 
 ------------------------------------------------------------------------------------------
 
-#### Listing existing Todo
+#### View ToDo :
+* Only accessible for authenticated users
+* Respond with an object containing the title and description of the requested ToDo
 
 <details>
  <summary><code>GET</code> <code><b>/</b></code> <code>(gets all todos)</code></summary>
@@ -378,10 +381,13 @@ Successfully Deleted
 </details>
 
 ----------------------------------------------
+#### Update Todos by Patching :
+###### #Status Done/Undone / #Deadline
+* Only accessible for authenticated users
+* 1 fields are required: Status and Deadline of the ToDo item
+* On success save an updated item to the database
+* Return appropriate respon
 
-#### Update Todos by Patching 
-
-###### #Mark Done/Undone / #Deadline
 <details>
  <summary><code>PATCH</code> <code><b>/v1/todos/mark/some-unique-uuid</b></code> <code>(updating a specific todos by patching Done or Undone)</code></summary>
 
@@ -445,7 +451,10 @@ Successfully Deleted
 
 ------------------------------------------------------------------------------------------
 
-#### Deleting existing Todo
+#### Delete ToDo :
+* Only accessible for authenticated users.
+* On success delete the item from the database.
+* Return appropriate response.
 
 <details>
   <summary><code>DELETE</code> <code><b>/v1/todos/some-unique-uuid</b></code> <code>(Delete todos by some-unique-uuid)</code></summary>
