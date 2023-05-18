@@ -414,7 +414,7 @@ Successfully Deleted
 </details>
 
 <details>
- <summary><code>PATCH</code> <code><b>/v1/todos/deadline/some-unique-uuid</b></code> <code>(update the todos by patching deadline(eg.Date) )</code></summary>
+ <summary><code>PATCH</code> <code><b>/v1/todos/deadline/some-unique-uuid</b></code> <code>(update the todos by patching deadline(eg 24h) )</code></summary>
 
  ##### Request
  
